@@ -1,37 +1,56 @@
 .game__square {
     width: 100%;
     height: 100%;
+    min-width: 0;
+    min-height: 0;
     background: var(--square-bg);
     border: 1px solid var(--square-border);
     border-radius: 10px;
     cursor: pointer;
-    outline: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    padding: 20px;
+    padding: clamp(8px, 3vw, 20px);
     box-shadow: 0 2px 4px var(--shadow-main);
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-.theme--dark .game__square:hover {
+.theme--dark .game__square:not(:disabled):hover {
     background: var(--square-hover);
     border-color: rgba(255, 255, 255, 0.25);
     transform: scale(1.04);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.05);
+    box-shadow:
+        0 6px 15px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(255, 255, 255, 0.05);
 }
 
 .theme--light .game__square {
     background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    border-color: rgba(148, 163, 184, 0.4); 
+    border-color: rgba(148, 163, 184, 0.4);
     box-shadow: 0 4px 6px rgba(148, 163, 184, 0.12);
 }
 
-.theme--light .game__square:hover {
+.theme--light .game__square:not(:disabled):hover {
     background: #ffffff;
-    border-color: #3b82f6; 
+    border-color: #3b82f6;
     transform: scale(1.04);
-    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.15), 0 0 8px rgba(59, 130, 246, 0.1);
+    box-shadow:
+        0 10px 20px rgba(59, 130, 246, 0.15),
+        0 0 8px rgba(59, 130, 246, 0.1);
+}
+
+.game__square:disabled {
+    cursor: default;
+}
+
+.game__square:focus-visible {
+    outline: 3px solid #38bdf8;
+    outline-offset: 2px;
+    z-index: 1;
 }
 
 .game__icon {

@@ -1,14 +1,14 @@
 .game__board {
-    height: 320px;
-    width: 320px;
+    width: min(320px, calc(100vw - 40px));
+    aspect-ratio: 1;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 10px;
-    padding: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: clamp(6px, 2vw, 10px);
+    padding: clamp(6px, 2vw, 10px);
     background: var(--panel-bg);
     border: 1px solid var(--panel-border);
     border-radius: 16px;
     box-shadow: 0 20px 40px var(--shadow-main);
-    transition: background 0.4s ease, border 0.4s ease;
+    transition: background 0.4s ease, border-color 0.4s ease;
 }
