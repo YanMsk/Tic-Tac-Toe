@@ -1,0 +1,14 @@
+.game__board {
+    height: 320px;
+    width: 320px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    padding: 10px;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px var(--shadow-main);
+    transition: background 0.4s ease, border 0.4s ease;
+}
