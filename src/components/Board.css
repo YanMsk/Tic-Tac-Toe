@@ -1,20 +1,39 @@
-/* Игровое поле 3 × 3 */
 
 .game__board {
+    grid-area: board;
+
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: repeat(3, minmax(0, 1fr));
-
-    width: min(320px, 85vw);
-    aspect-ratio: 1 / 1;
-
     gap: 10px;
-    padding: 10px;
+
+    width: min(100%, 400px);
+    aspect-ratio: 1 / 1;
+    padding: 12px;
     box-sizing: border-box;
 
-    border: 1px solid var(--game-border, #e1e5f0);
-    border-radius: 20px;
+    border: 2px solid var(--game-border-strong, #42625e);
+    border-radius: 16px;
 
-    background: var(--game-card, #ffffff);
-    box-shadow: var(--game-shadow, 0 12px 40px rgba(35, 40, 80, 0.08));
+    background: var(--game-card, #192727);
+    box-shadow: var(--game-shadow, 0 8px 28px rgba(15, 76, 70, 0.08));
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+@media (max-width: 430px) {
+    .game__board {
+        gap: 7px;
+        padding: 8px;
+        border-radius: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .game__board {
+        transition: none;
+    }
 }
