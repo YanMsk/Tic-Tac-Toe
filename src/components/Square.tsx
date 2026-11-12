@@ -1,8 +1,14 @@
 import './Square.css';
 import cross from '../assets/cross.png';
 import circle from '../assets/circle.png';
+import { Mark } from '../helper';
 
-function Square({ value, onClick }) {
+interface SquareProps {
+    value: Mark | null;
+    onClick: () => void;
+}
+
+function Square({ value, onClick }: SquareProps) {
     return (
         <button
             className="game__square"

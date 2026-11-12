@@ -1,7 +1,9 @@
-import { calculateWinner } from './helper';
+import { Board, Mark, calculateWinner } from './helper';
 
-function getAvailableMoves(board) {
-    return board.reduce((moves, cell, index) => {
+export type Difficulty = 'easy' | 'medium' | 'hard';
+
+function getAvailableMoves(board: Board): number[] {
+    return board.reduce<number[]>((moves, cell, index) => {
         if (cell === null) {
             moves.push(index);
         }
@@ -10,7 +12,7 @@ function getAvailableMoves(board) {
     }, []);
 }
 
-function findWinningMove(board, mark) {
+function findWinningMove(board: Board, mark: Mark): number | null {
     for (const index of getAvailableMoves(board)) {
         const nextBoard = [...board];
         nextBoard[index] = mark;
@@ -23,7 +25,7 @@ function findWinningMove(board, mark) {
     return null;
 }
 
-function getRandomMove(board) {
+function getRandomMove(board: Board): number | null {
     const moves = getAvailableMoves(board);
 
     if (moves.length === 0) {
@@ -33,8 +35,12 @@ function getRandomMove(board) {
     return moves[Math.floor(Math.random() * moves.length)];
 }
 
-function getMediumMove(board, computerMark) {
-    const humanMark = computerMark === 'X' ? 'O' : 'X';
+function getOtherMark(mark: Mark): Mark {
+    return mark === 'X' ? 'O' : 'X';
+}
+
+function getMediumMove(board: Board, computerMark: Mark): number | null {
+    const humanMark = getOtherMark(computerMark);
 
     // Если компьютер может выиграть — выигрывает.
     const winningMove = findWinningMove(board, computerMark);
@@ -72,7 +78,13 @@ function getMediumMove(board, computerMark) {
     return null;
 }
 
-function minimax(board, isMaximizing, computerMark, humanMark, depth = 0) {
+function minimax(
+    board: Board,
+    isMaximizing: boolean,
+    computerMark: Mark,
+    humanMark: Mark,
+    depth = 0,
+): number {
     const winner = calculateWinner(board);
 
     if (winner === computerMark) {
@@ -130,8 +142,8 @@ function minimax(board, isMaximizing, computerMark, humanMark, depth = 0) {
     return bestScore;
 }
 
-function getHardMove(board, computerMark) {
-    const humanMark = computerMark === 'X' ? 'O' : 'X';
+function getHardMove(board: Board, computerMark: Mark): number | null {
+    const humanMark = getOtherMark(computerMark);
     const moves = getAvailableMoves(board);
 
     if (moves.length === 0) {
@@ -139,7 +151,7 @@ function getHardMove(board, computerMark) {
     }
 
     let bestScore = -Infinity;
-    let bestMoves = [];
+    let bestMoves: number[] = [];
 
     for (const index of moves) {
         const nextBoard = [...board];
@@ -159,7 +171,11 @@ function getHardMove(board, computerMark) {
     return bestMoves[Math.floor(Math.random() * bestMoves.length)];
 }
 
-export function getComputerMove(board, difficulty, computerMark) {
+export function getComputerMove(
+    board: Board,
+    difficulty: Difficulty,
+    computerMark: Mark,
+): number | null {
     if (difficulty === 'easy') {
         return getRandomMove(board);
     }

@@ -1,19 +1,35 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import './Game.css';
 import Board from './Board';
-import { calculateWinner } from '../helper';
-import { getComputerMove } from '../computer';
+import {
+    Board as BoardState,
+    Mark,
+    SquareValue,
+    calculateWinner,
+} from '../helper';
+import { Difficulty, getComputerMove } from '../computer';
 
-const createEmptyBoard = () => Array(9).fill(null);
-const createInitialHistory = () => [{ squares: createEmptyBoard() }];
+type GameMode = 'local' | 'computer';
+
+interface HistoryEntry {
+    squares: BoardState;
+}
+
+const createEmptyBoard = (): BoardState =>
+    Array<SquareValue>(9).fill(null);
+const createInitialHistory = (): HistoryEntry[] => [
+    { squares: createEmptyBoard() },
+];
 
 function Game() {
-    const [history, setHistory] = useState(createInitialHistory);
+    const [history, setHistory] = useState<HistoryEntry[]>(
+        createInitialHistory,
+    );
     const [stepNumber, setStepNumber] = useState(0);
     const [isDarkTheme, setIsDarkTheme] = useState(false);
-    const [mode, setMode] = useState('local');
-    const [difficulty, setDifficulty] = useState('hard');
-    const [humanMark, setHumanMark] = useState('X');
+    const [mode, setMode] = useState<GameMode>('local');
+    const [difficulty, setDifficulty] = useState<Difficulty>('hard');
+    const [humanMark, setHumanMark] = useState<Mark>('X');
 
     const current = history[stepNumber];
     const currentBoard = current.squares;
@@ -22,8 +38,8 @@ function Game() {
     const isDraw = !winner && currentBoard.every(Boolean);
 
     const xIsNext = stepNumber % 2 === 0;
-    const nextMark = xIsNext ? 'X' : 'O';
-    const computerMark = humanMark === 'X' ? 'O' : 'X';
+    const nextMark: Mark = xIsNext ? 'X' : 'O';
+    const computerMark: Mark = humanMark === 'X' ? 'O' : 'X';
 
     const isViewingHistory = stepNumber < history.length - 1;
 
@@ -35,7 +51,7 @@ function Game() {
         setStepNumber(0);
     };
 
-    const handleClick = (index) => {
+    const handleClick = (index: number) => {
         if (isViewingHistory) return;
         if (winner || isDraw || currentBoard[index] !== null) return;
         if (isComputerTurn) return;
@@ -52,21 +68,21 @@ function Game() {
         setStepNumber(nextHistory.length - 1);
     };
 
-    const jumpTo = (step) => {
+    const jumpTo = (step: number) => {
         setStepNumber(step);
     };
 
-    const handleModeChange = (event) => {
-        setMode(event.target.value);
+    const handleModeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setMode(event.target.value as GameMode);
         resetGame();
     };
 
-    const handleDifficultyChange = (event) => {
-        setDifficulty(event.target.value);
+    const handleDifficultyChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setDifficulty(event.target.value as Difficulty);
     };
 
-    const handleHumanMarkChange = (event) => {
-        setHumanMark(event.target.value);
+    const handleHumanMarkChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setHumanMark(event.target.value as Mark);
         resetGame();
     };
 
@@ -109,7 +125,7 @@ function Game() {
         stepNumber,
     ]);
 
-    let status;
+    let status: string;
 
     if (isViewingHistory) {
         status =
